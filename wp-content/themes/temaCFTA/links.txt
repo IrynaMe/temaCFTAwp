@@ -1,0 +1,106 @@
+----------Template Hierarchy wp-------- 
+https://codex.wordpress.org/File:Template_Hierarchy.png
+
+---------------------------------IN FUNCTIONS.php--------------------
+<?php
+
+// <!-- add css and bootstrap -->
+//<!-- https://developer.wordpress.org/reference/hooks/wp_enqueue_scripts/ -->
+//<!-- https://nicholasmarmonti.com/wordpress/functions-php/ -->
+
+
+//<!-- read about standard processes in wp -->
+//<!-- https://codex.wordpress.org/Plugin_API/Filter_Reference -->
+
+
+function foglio_stile()
+{
+    wp_enqueue_style('style', get_stylesheet_directory_uri());
+    wp_enqueue_style('bootstrapcss', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css');
+    wp_enqueue_script('bootstrapJS', 'https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js');
+}
+
+
+//equivalent a HTML link rel
+//hook: when I imlement a standard process of wp='wp_enqueue_scripts' 
+// then also the content of function foglio_stile: style.css is implemented
+add_action('wp_enqueue_scripts', 'foglio_stile');
+
+//--------------registro un menu
+//steps to create menu:
+//1 fuctions.php register existance of menu
+// https://developer.wordpress.org/reference/functions/register_nav_menus/
+//https://stackoverflow.com/questions/30280640/how-to-use-register-nav-menus-in-wordpress
+//with this functions in themes/appearence appeares item -menu
+
+function registra_menu(){
+    register_nav_menus(
+      array('primary' => 'Primary Menu')
+      );
+ }
+//2front-end -to visualize
+go to header.php ...
+
+
+ add_action('after_setup_theme', 'registra_menu');
+
+---------------------------------IN HEADER.php--------------------
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- https://codex.wordpress.org/it:Riferimento_funzioni/wp_head -->
+    <?php wp_head()?>
+</head>
+<body>
+-----------menu----
+--to visualize menu (step 2)
+//https://developer.wordpress.org/reference/functions/wp_nav_menu/
+function:
+wp_nav_menu( array $args = array() ): void|string|false
+
+//we use this:
+wp_nav_menu( $args );
+
+----------------IN INDEX.php------------------
+<!-- https://codex.wordpress.org/Il_Loop-->
+<!-- include header.php -->
+<?php get_header()?>
+<div class="container my-5">
+  <div class="row ">
+
+ 
+
+<!-- start loop -->
+<?php if ( have_posts() ) : while ( have_posts() ) : the_post(); ?>
+<div class="col-4 my-3">
+<?php the_post_thumbnail();?>
+</div>
+
+<!-- Visualizza il Titolo come un link al permalink dell'articolo. -->
+<div class="col-8 my-3">
+  <h2 class="title"><a href="<?php the_permalink() ?>" rel="bookmark" title="Link permanente a <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
+
+
+ <!-- Visualizza il contenuto dell'articolo all'interno di un div. -->
+
+ <div class="entry ">
+   <?php the_content(); ?>
+ </div>
+
+</div>
+
+
+
+<!-- end loop -->
+<?php endwhile; else: ?>
+<p><?php _e('Nessun articolo corrisponde ai criteri di ricerca.'); ?></p>
+<?php endif; ?>
+</div>
+</div>
+<!-- include footer.php -->
+<?php get_footer()?>
+

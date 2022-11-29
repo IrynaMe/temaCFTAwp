@@ -1,0 +1,13 @@
+/*
+Theme Name:   temaCFTA child
+Theme URI:    http://cfta.it
+Description:  child theme of temaCFTA
+Author:       corso laravel cfta
+Author URI:   http://cfta.it
+Template:     temaCFTA
+Version:      1.0.0
+
+Text Domain:  temaCFTAchild
+*/
+
+@import url(../temaCFTA/style.css);
